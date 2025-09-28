@@ -28,7 +28,7 @@
     <div class="attendance-tracker">
       <div class="attendance-header">
         <i class="fas fa-users"></i>
-        Attendance: <span id="attendeeCount">0</span>/50
+        Attendance: <span id="attendeeCount">0</span>/10
       </div>
       <div class="progress-container">
         <div id="progressBar" class="progress-bar"></div>
@@ -57,9 +57,12 @@
               <option value="power">Team Renewables</option>
             </select>
           </div>
-          <button type="submit" id="checkInBtn">
-            <i class="fas fa-user-check"></i> Check In
-          </button>
+          <div class="button-row">
+            <button type="submit" id="checkInBtn">
+              <i class="fas fa-user-check"></i> Check In
+            </button>
+            <button id="resetAllBtn" type="button">Reset All</button>
+          </div>
         </div>
       </form>
 

@@ -1,63 +1,56 @@
-// grabs elements to interact with in javascript
 const form = document.getElementById("checkInForm");
 const nameInput = document.getElementById("attendeeName");
 const teamSelect = document.getElementById("teamSelect");
+const resetAllBtn = document.getElementById("resetAllBtn");
 
-// Track attendance
-const maxCount = 50;
+const maxCount = 10;
 let counts = {
   total: 0,
   water: 0,
   zero: 0,
-  power: 0,
+  power: 0
 };
-// Store attendees as array of objects: { name, team }
 let attendees = [];
 
-// Load counts and attendees from localStorage or set to 0/empty
 function loadCounts() {
   const saved = localStorage.getItem("attendanceCounts");
   if (saved) {
     counts = JSON.parse(saved);
+  } else {
+    counts = { total: 0, water: 0, zero: 0, power: 0 };
   }
   const savedAttendees = localStorage.getItem("attendeeList");
   if (savedAttendees) {
     attendees = JSON.parse(savedAttendees);
+  } else {
+    attendees = [];
   }
-  // Update UI
-  document.getElementById("attendeeCount").textContent = counts.total;
-  document.getElementById("waterCount").textContent = counts.water;
-  document.getElementById("zeroCount").textContent = counts.zero;
-  document.getElementById("powerCount").textContent = counts.power;
-  // Progress bar
-  const percent = Math.round((counts.total / maxCount) * 100) + "%";
-  document.getElementById("progressBar").style.width = percent;
-  // Render attendee list
-  renderAttendeeList();
+  updateUI();
 }
 
-// Save counts and attendees to localStorage
 function saveCounts() {
   localStorage.setItem("attendanceCounts", JSON.stringify(counts));
   localStorage.setItem("attendeeList", JSON.stringify(attendees));
 }
 
-// Render attendee lists below each team counter
+function updateUI() {
+  document.getElementById("attendeeCount").textContent = counts.total;
+  document.getElementById("waterCount").textContent = counts.water;
+  document.getElementById("zeroCount").textContent = counts.zero;
+  document.getElementById("powerCount").textContent = counts.power;
+  const percent = `${Math.round((counts.total / maxCount) * 100)}%`;
+  document.getElementById("progressBar").style.width = percent;
+  renderAttendeeList();
+}
+
 function renderAttendeeList() {
-  // Clear all lists
   document.getElementById("waterAttendees").innerHTML = "";
   document.getElementById("zeroAttendees").innerHTML = "";
   document.getElementById("powerAttendees").innerHTML = "";
-
   for (let i = 0; i < attendees.length; i++) {
     const attendee = attendees[i];
     const li = document.createElement("li");
     li.textContent = attendee.name;
-    // Only show team label if you want, but not needed since list is under team
-    // const teamSpan = document.createElement("span");
-    // teamSpan.className = "attendee-team";
-    // teamSpan.textContent = attendee.team;
-    // li.appendChild(teamSpan);
     if (attendee.team === "water") {
       document.getElementById("waterAttendees").appendChild(li);
     } else if (attendee.team === "zero") {
@@ -68,45 +61,28 @@ function renderAttendeeList() {
   }
 }
 
-// Load counts on page load
 window.addEventListener("DOMContentLoaded", loadCounts);
 
-// form submission what is e
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  // get the values from the form
   const name = nameInput.value;
   const team = teamSelect.value;
   const teamName = teamSelect.selectedOptions[0].text;
 
-  console.log(name, team, teamName);
-
-  // Increment counts
   counts.total++;
   counts[team]++;
-
-  // Add attendee to list
   attendees.push({ name: name, team: team });
 
-  // Update UI
-  document.getElementById("attendeeCount").textContent = counts.total;
-  document.getElementById(team + "Count").textContent = counts[team];
-  const percent = Math.round((counts.total / maxCount) * 100) + "%";
-  document.getElementById("progressBar").style.width = percent;
-  renderAttendeeList();
-
-  // Save all counts and attendees
+  updateUI();
   saveCounts();
 
-  // Check for celebration
   if (counts.total >= maxCount) {
-    // Find the winning team (highest count)
     let winner = "";
     let winnerCount = 0;
     const teamNames = {
       water: "Water Wise",
       zero: "Net Zero",
-      power: "Renewables",
+      power: "Renewables"
     };
     for (let t of ["water", "zero", "power"]) {
       if (counts[t] > winnerCount) {
@@ -114,24 +90,35 @@ form.addEventListener("submit", function (e) {
         winnerCount = counts[t];
       }
     }
-    let celebration = `🎉 Goal reached! The winning team is <b>${teamNames[winner]}</b>! 🎉`;
     const greeting = document.getElementById("greeting");
-    greeting.innerHTML = celebration;
+    greeting.innerHTML = `🎉 Goal reached! The winning team is <b>${teamNames[winner]}</b>! 🎉`;
     greeting.style.display = "block";
-    // // Optionally, disable the form
-    // form.querySelector("button[type='submit']").disabled = true;
-    // nameInput.disabled = true;
-    // teamSelect.disabled = true;
-    // return;
+    form.querySelector("button[type='submit']").disabled = true;
+    nameInput.disabled = true;
+    teamSelect.disabled = true;
+    return;
   }
 
-  // Welcome message
   const message = `Welcome, ${name} from ${teamName}!`;
-  // Display the message on the page
   const greeting = document.getElementById("greeting");
-  greeting.textContent = message; // displays the welcome message on the webpage
-  greeting.style.display = "block"; // Make sure the message is visible
-  console.log(message);
-
+  greeting.textContent = message;
+  greeting.style.display = "block";
   form.reset();
 });
+
+if (resetAllBtn) {
+  resetAllBtn.addEventListener("click", function () {
+    localStorage.removeItem("attendanceCounts");
+    localStorage.removeItem("attendeeList");
+    counts = { total: 0, water: 0, zero: 0, power: 0 };
+    attendees = [];
+    updateUI();
+    form.querySelector("button[type='submit']").disabled = false;
+    nameInput.disabled = false;
+    teamSelect.disabled = false;
+    const greeting = document.getElementById("greeting");
+    greeting.textContent = "";
+    greeting.style.display = "none";
+    form.reset();
+  });
+}
