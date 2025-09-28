@@ -22,13 +22,13 @@ Use someone's name and selected team to create a personalized greeting.
 
 Clear all fields in the form so it's ready for the next attendee.
 
-## Show the updated total count on the page
+## Show the updated total count on the page !!!!
 
 Update the text inside a span to show the current attendee count.
 
-## Update the width of a progress bar using a percentage
+## Update the width of a progress bar using a percentage !!!!
 
-Change the width of a progress bar based on the calculated progress.
+Change the width of a progress bar based on the calculated progress. 
 
 ## Update the correct team’s count on the page
 
