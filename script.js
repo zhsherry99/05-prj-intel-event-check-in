@@ -3,19 +3,20 @@ const nameInput = document.getElementById("attendeeName");
 const teamSelect = document.getElementById("teamSelect");
 const resetAllBtn = document.getElementById("resetAllBtn");
 
-const maxCount = 10;
+const maxCount = 50;
 let counts = {
   total: 0,
   water: 0,
   zero: 0,
-  power: 0
+  power: 0,
 };
 let attendees = [];
 
+// Load counts and attendees from localStorage or set to 0/empty
 function loadCounts() {
-  const saved = localStorage.getItem("attendanceCounts");
-  if (saved) {
-    counts = JSON.parse(saved);
+  const savedCounts = localStorage.getItem("attendanceCounts");
+  if (savedCounts) {
+    counts = JSON.parse(savedCounts);
   } else {
     counts = { total: 0, water: 0, zero: 0, power: 0 };
   }
@@ -28,6 +29,7 @@ function loadCounts() {
   updateUI();
 }
 
+// Save counts and attendees to localStorage
 function saveCounts() {
   localStorage.setItem("attendanceCounts", JSON.stringify(counts));
   localStorage.setItem("attendeeList", JSON.stringify(attendees));
@@ -82,7 +84,7 @@ form.addEventListener("submit", function (e) {
     const teamNames = {
       water: "Water Wise",
       zero: "Net Zero",
-      power: "Renewables"
+      power: "Renewables",
     };
     for (let t of ["water", "zero", "power"]) {
       if (counts[t] > winnerCount) {
