@@ -1,3 +1,51 @@
+/* Attendee list styles */
+.attendee-list-section {
+  margin-top: 32px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 18px 18px 10px 18px;
+  box-shadow: 0 2px 8px rgba(0, 60, 116, 0.04);
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.attendee-list-title {
+  color: #64748b;
+  font-size: 15px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+.attendee-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 300px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.attendee-list li {
+  padding: 7px 0 7px 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.attendee-list li:last-child {
+  border-bottom: none;
+}
+.attendee-list .attendee-team {
+  font-size: 13px;
+  color: #64748b;
+  background: #e0e7ef;
+  border-radius: 8px;
+  padding: 2px 8px;
+  margin-left: 8px;
+}
 /* Modern reset */
 * {
   margin: 0;
@@ -251,6 +299,14 @@ button .fas {
 .success-message {
   background-color: #e8f4fc;
   color: #003c71;
+}
+
+.greeting-message {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #0057b7; /* Optional: Intel blue */
 }
 
 /* Counter */
